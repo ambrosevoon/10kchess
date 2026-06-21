@@ -19,6 +19,34 @@ for(let key in Controls){
     window.input[Controls[key]] = false;
 }
 
+const minimapCanvasEl = document.getElementById('minimapCanvas');
+let minimapDragging = false;
+
+function panCameraToMinimap(e){
+    const rect = minimapCanvasEl.getBoundingClientRect();
+    const fx = (e.clientX - rect.left) / rect.width;
+    const fy = (e.clientY - rect.top) / rect.height;
+
+    camera.x = -(fx * boardW * squareSize);
+    camera.y = -(fy * boardH * squareSize);
+    changed = true;
+}
+
+minimapCanvasEl.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    minimapDragging = true;
+    panCameraToMinimap(e);
+});
+window.addEventListener('mousemove', (e) => {
+    if(minimapDragging === true){
+        e.stopPropagation();
+        panCameraToMinimap(e);
+    }
+}, true);
+window.addEventListener('mouseup', () => {
+    minimapDragging = false;
+});
+
 document.querySelectorAll('.pan-btn').forEach((btn) => {
     const dir = btn.dataset.dir;
     const press = (e) => {
