@@ -206,18 +206,11 @@ ws.onclose = () => {
 }
 
 // join game
-grecaptcha.ready(() => {
-    grecaptcha.render(document.querySelector(".g-recaptcha"), {
-        'sitekey': '0x4AAAAAABDl4Wthv8-PLPyU',
-        'callback': (captchaResponse) => {
-            const buf = new Uint8Array(captchaResponse.length);
-            encodeAtPosition(captchaResponse, buf, 0);
-    
-            ws.send(buf);
+document.getElementById('playButton').addEventListener('click', () => {
+    const buf = new Uint8Array(1);
+    window.send(buf);
 
-            document.getElementById('fullscreenDiv').remove();
-        }
-    })
+    document.getElementById('fullscreenDiv').remove();
 })
 
 // const buf = new Uint8Array(0);

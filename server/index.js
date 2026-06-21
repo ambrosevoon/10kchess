@@ -6,8 +6,6 @@ import { closest } from 'color-2-name';
 
 import { networkInterfaces } from 'os';
 
-const captchaSecretKey = "[captcha key]"
-
 function serverIp(){
     const nets = networkInterfaces();
     const results = {};
@@ -272,18 +270,6 @@ setInterval(() => {
 
 let teamsToNeutralize = [];
 
-let usedCaptchaKeys = {};
-setInterval(() => {
-    const now = Date.now();
-    for(let key in usedCaptchaKeys){
-        const date = usedCaptchaKeys[key];
-        if(now - date > 2 * 60 * 1000){
-            // default captcha token expires after 2 mins
-            delete usedCaptchaKeys[key];
-        }
-    }  
-}, 2 * 60 * 1000)
-
 global.app = uWS.App().ws('/*', {
     compression: 0,
     maxPayloadLength: 4096,
@@ -330,35 +316,8 @@ global.app = uWS.App().ws('/*', {
         const u8 = new Uint8Array(data);
         if(ws.verified === false || (ws.dead === true && !(u8[0] === 0xf7 && u8[1] === 0xb7/*chat msgs are ok*/) )){
             (async()=>{
-                if(ws.verified === false){
-                    // captcha
-                    const captchaKey = decodeText(u8);
-                    if(usedCaptchaKeys[captchaKey] !== undefined){
-                        if(ws.closed !== true) ws.close();
-                        return;
-                    }
-    
-                    await new Promise((resolve) => {
-                        fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-                            method: 'POST',
-                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                            body: `secret=${captchaSecretKey}&response=${captchaKey}`,
-                        }).then(async (d) => {
-                            const response = JSON.parse(await d.text());
-                            
-                            if(response.success === true){
-                                ws.verified = true;
-                            } else {
-                                if(ws.closed !== true) ws.close();
-                            }
-        
-                            usedCaptchaKeys[captchaKey] = Date.now();
-                            resolve();
-                        })
-                    })
-                    ws.verified = true;
-                }
-    
+                ws.verified = true;
+
                 if(Date.now() < ws.respawnTime){
                     return;
                 }
