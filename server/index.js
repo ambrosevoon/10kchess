@@ -531,7 +531,7 @@ global.app = uWS.App().ws('/*', {
             context
         );
     },
-}).listen(PORT, (token) => {
+}).listen('0.0.0.0', PORT, (token) => {
     if (token) {
         console.log('Server Listening to Port ' + PORT);
     } else {
