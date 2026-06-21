@@ -108,6 +108,47 @@ body {
     /* image-rendering: pixelated; */
 }
 
+#panControls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-areas:
+        ".    up    ."
+        "left .     right"
+        ".    down  .";
+    grid-template-columns: 44px 44px 44px;
+    grid-template-rows: 44px 44px 44px;
+    gap: 4px;
+    z-index: 10;
+    touch-action: none;
+}
+
+.pan-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.pan-btn:active, .pan-btn.active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.pan-up { grid-area: up; }
+.pan-left { grid-area: left; }
+.pan-right { grid-area: right; }
+.pan-down { grid-area: down; }
+
 .chat {
     position: fixed;
     left: -1px;

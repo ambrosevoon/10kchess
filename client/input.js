@@ -19,6 +19,23 @@ for(let key in Controls){
     window.input[Controls[key]] = false;
 }
 
+document.querySelectorAll('.pan-btn').forEach((btn) => {
+    const dir = btn.dataset.dir;
+    const press = (e) => {
+        e.preventDefault();
+        window.input[dir] = true;
+        btn.classList.add('active');
+    };
+    const release = () => {
+        window.input[dir] = false;
+        btn.classList.remove('active');
+    };
+    btn.addEventListener('pointerdown', press);
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointerleave', release);
+    btn.addEventListener('pointercancel', release);
+});
+
 window.onresize = () => {
     canvas.width = canvas.w = window.innerWidth;
     canvas.height = canvas.h = window.innerHeight;
