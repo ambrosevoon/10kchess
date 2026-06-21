@@ -9,6 +9,9 @@
   "type": "module",
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "color-2-name": "^1.4.4",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.51.0"
