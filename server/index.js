@@ -183,6 +183,7 @@ const PORT = process.env.PORT || 3000;
 global.clients = {};
 
 let connectedIps = {};
+const MAX_CONNECTIONS_PER_IP = 5;
 
 let id = 1;
 function generateId(){
@@ -467,19 +468,22 @@ global.app = uWS.App().ws('/*', {
         }
 
         if(ws.ip){
-            delete connectedIps[ws.ip];
+            connectedIps[ws.ip]--;
+            if(connectedIps[ws.ip] <= 0){
+                delete connectedIps[ws.ip];
+            }
         }
     },
     upgrade: (res, req, context) => {
         let ip = getIp(res, req);
 
         if(ip !== undefined){
-            if(connectedIps[ip] === true){
-                res.end("Connection rejected");
+            if((connectedIps[ip] || 0) >= MAX_CONNECTIONS_PER_IP){
+                res.writeStatus('429 Too Many Requests').end("Connection rejected");
                 console.log('ws ratelimit', ip);
                 return;
             }
-            connectedIps[ip] = true;
+            connectedIps[ip] = (connectedIps[ip] || 0) + 1;
         }
     
         res.upgrade(
