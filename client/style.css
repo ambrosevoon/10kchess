@@ -105,7 +105,12 @@ body {
 
 #minimapCanvas {
     position: absolute;
+    cursor: grab;
     /* image-rendering: pixelated; */
+}
+
+#minimapCanvas.grabbing {
+    cursor: grabbing;
 }
 
 #panControls {

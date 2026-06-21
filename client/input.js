@@ -35,6 +35,7 @@ function panCameraToMinimap(e){
 minimapCanvasEl.addEventListener('mousedown', (e) => {
     e.stopPropagation();
     minimapDragging = true;
+    minimapCanvasEl.classList.add('grabbing');
     panCameraToMinimap(e);
 });
 window.addEventListener('mousemove', (e) => {
@@ -45,6 +46,7 @@ window.addEventListener('mousemove', (e) => {
 }, true);
 window.addEventListener('mouseup', () => {
     minimapDragging = false;
+    minimapCanvasEl.classList.remove('grabbing');
 });
 
 document.querySelectorAll('.pan-btn').forEach((btn) => {
