@@ -110,7 +110,11 @@ ws.addEventListener("message", function (data) {
         if(msg[2] === 6 && msg[3] === selfId){
             gameOver = false;
             gameOverTime = undefined;
-            
+
+            camera.x = -(msg[0] * squareSize + squareSize / 2);
+            camera.y = -(msg[1] * squareSize + squareSize / 2);
+            changed = true;
+
             interpSquare = [msg[0], msg[1]];
             setTimeout(() => {
                 if(gameOver === false){
