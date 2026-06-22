@@ -173,8 +173,12 @@ body {
 
 #minimapCanvas {
     position: absolute;
-    cursor: grab;
+    cursor: default;
     /* image-rendering: pixelated; */
+}
+
+#minimapCanvas.hover-rect {
+    cursor: grab;
 }
 
 #minimapCanvas.grabbing {

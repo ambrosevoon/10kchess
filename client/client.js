@@ -522,6 +522,13 @@ function render() {
         cx.lineWidth = 2;
         cx.strokeStyle = '#434343';
         cx.strokeRect(cameraTop.x * size, cameraTop.y * size, (cameraBottom.x - cameraTop.x) * size, (cameraBottom.y - cameraTop.y) * size);
+
+        window.minimapViewRect = {
+            x: cameraTop.x * size,
+            y: cameraTop.y * size,
+            w: (cameraBottom.x - cameraTop.x) * size,
+            h: (cameraBottom.y - cameraTop.y) * size
+        };
     }
 
     if(gameOver === true){

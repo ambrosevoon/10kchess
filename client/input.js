@@ -21,6 +21,7 @@ for(let key in Controls){
 
 const minimapCanvasEl = document.getElementById('minimapCanvas');
 let minimapDragging = false;
+let minimapHovering = false;
 
 function panCameraToMinimap(e){
     const rect = minimapCanvasEl.getBoundingClientRect();
@@ -32,9 +33,37 @@ function panCameraToMinimap(e){
     changed = true;
 }
 
+function isOverMinimapRect(e){
+    const r = window.minimapViewRect;
+    if(!r) return false;
+
+    const rect = minimapCanvasEl.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    return mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h;
+}
+
+function updateMinimapHoverCursor(e){
+    if(minimapDragging === true) return;
+
+    const hovering = isOverMinimapRect(e);
+    if(hovering !== minimapHovering){
+        minimapHovering = hovering;
+        minimapCanvasEl.classList.toggle('hover-rect', hovering);
+    }
+}
+
+minimapCanvasEl.addEventListener('mousemove', updateMinimapHoverCursor);
+minimapCanvasEl.addEventListener('mouseleave', () => {
+    minimapHovering = false;
+    minimapCanvasEl.classList.remove('hover-rect');
+});
+
 minimapCanvasEl.addEventListener('mousedown', (e) => {
     e.stopPropagation();
     minimapDragging = true;
+    minimapCanvasEl.classList.remove('hover-rect');
     minimapCanvasEl.classList.add('grabbing');
     panCameraToMinimap(e);
 });
@@ -44,9 +73,12 @@ window.addEventListener('mousemove', (e) => {
         panCameraToMinimap(e);
     }
 }, true);
-window.addEventListener('mouseup', () => {
-    minimapDragging = false;
-    minimapCanvasEl.classList.remove('grabbing');
+window.addEventListener('mouseup', (e) => {
+    if(minimapDragging === true){
+        minimapDragging = false;
+        minimapCanvasEl.classList.remove('grabbing');
+        updateMinimapHoverCursor(e);
+    }
 });
 
 document.querySelectorAll('.pan-btn').forEach((btn) => {
