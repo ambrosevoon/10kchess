@@ -164,13 +164,13 @@ window.onkeydown = window.onkeyup = (e) => {
     // }
 }
 
-window.onwheel = (e) => {
+window.addEventListener('wheel', (e) => {
     e.preventDefault();
     camera.scale *= (1 - e.deltaY / 2100);
     if(camera.scale > 6) camera.scale = 6;
     else if(camera.scale < 0.27) camera.scale = 0.27;
     changed = true;
-}
+}, { passive: false });
 
 function appendChatMessage(msg, color='white'){
     const chatMessage = document.createElement('div');
