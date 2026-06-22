@@ -213,7 +213,7 @@ ws.onclose = () => {
 const playerNameInput = document.getElementById('playerNameInput');
 
 function joinGame(){
-    const name = playerNameInput.value.trim().slice(0, 16);
+    const name = playerNameInput.value.trim().slice(0, 30);
     const buf = name.length > 0 ? new TextEncoder().encode(name) : new Uint8Array(0);
     window.send(buf);
 

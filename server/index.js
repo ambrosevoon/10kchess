@@ -320,7 +320,7 @@ global.app = uWS.App().ws('/*', {
                 ws.verified = true;
 
                 if(u8.length > 0){
-                    const name = decodeText(u8).trim().slice(0, 16);
+                    const name = decodeText(u8).trim().slice(0, 30);
                     if(name.length > 0 && isBadWord(name) === false && name !== ws.name){
                         ws.name = name;
                         broadcast(sendLeaderboard());

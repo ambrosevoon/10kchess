@@ -108,7 +108,8 @@ body {
 }
 
 #playerNameInput {
-    width: 240px;
+    width: 280px;
+    max-width: 80vw;
     padding: 14px 18px;
     border-radius: 30px;
     border: 2px solid rgba(255, 255, 255, 0.25);
