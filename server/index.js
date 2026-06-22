@@ -316,7 +316,7 @@ global.app = uWS.App().ws('/*', {
         // there's only two messages - move piece from one square to another or join game
         const u8 = new Uint8Array(data);
         if(ws.verified === false || (ws.dead === true && !(u8[0] === 0xf7 && u8[1] === 0xb7/*chat msgs are ok*/) )){
-            (async()=>{
+            {
                 ws.verified = true;
 
                 if(u8.length > 0){
@@ -359,7 +359,7 @@ global.app = uWS.App().ws('/*', {
     
                 ws.verified = true;
                 ws.dead = false;
-            })();
+            }
 
             return;
         }
