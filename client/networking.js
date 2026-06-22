@@ -210,12 +210,22 @@ ws.onclose = () => {
 }
 
 // join game
-document.getElementById('playButton').addEventListener('click', () => {
-    const buf = new Uint8Array(1);
+const playerNameInput = document.getElementById('playerNameInput');
+
+function joinGame(){
+    const name = playerNameInput.value.trim().slice(0, 16);
+    const buf = name.length > 0 ? new TextEncoder().encode(name) : new Uint8Array(0);
     window.send(buf);
 
     document.getElementById('fullscreenDiv').remove();
-})
+}
+
+document.getElementById('playButton').addEventListener('click', joinGame);
+playerNameInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+        joinGame();
+    }
+});
 
 // const buf = new Uint8Array(0);
 // send(buf);

@@ -37,7 +37,7 @@ function sendLeaderboard(){
     let leaderboardData = [];
     let bufLen = 1;
     for(let key in leaderboard){
-        const name = teamToName(key);
+        const name = clients[key]?.name || teamToName(key);
         leaderboardData.push({
             id: key,
             kills: leaderboard[key],
@@ -318,6 +318,13 @@ global.app = uWS.App().ws('/*', {
         if(ws.verified === false || (ws.dead === true && !(u8[0] === 0xf7 && u8[1] === 0xb7/*chat msgs are ok*/) )){
             (async()=>{
                 ws.verified = true;
+
+                if(u8.length > 0){
+                    const name = decodeText(u8).trim().slice(0, 16);
+                    if(name.length > 0 && isBadWord(name) === false){
+                        ws.name = name;
+                    }
+                }
 
                 if(Date.now() < ws.respawnTime){
                     return;

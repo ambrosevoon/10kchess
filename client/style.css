@@ -100,6 +100,36 @@ body {
     z-index: 100;
 }
 
+#playMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+#playerNameInput {
+    width: 240px;
+    padding: 14px 18px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+#playerNameInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#playerNameInput:focus {
+    border-color: #6cd95b;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 #playButton {
     width: 160px;
     height: 160px;
