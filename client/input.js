@@ -276,6 +276,61 @@ function addToLeaderboard(playerName, playerId, mapName, bracketValue=0, lbColor
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 if(isMobile){
+    document.body.classList.add('is-mobile');
+}
+
+const joystickBase = document.getElementById('joystickBase');
+const joystickKnob = document.getElementById('joystickKnob');
+let joystickDragging = false;
+let joystickAngle = 0;
+let joystickDist = 0;
+
+function updateJoystickFromEvent(e){
+    const rect = joystickBase.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const maxR = rect.width / 2 - 6;
+
+    const dx = e.clientX - centerX;
+    const dy = e.clientY - centerY;
+    const mag = Math.sqrt(dx * dx + dy * dy);
+    const clamped = Math.min(mag, maxR);
+
+    joystickAngle = Math.atan2(dy, dx);
+    joystickDist = maxR > 0 ? clamped / maxR : 0;
+
+    const knobX = Math.cos(joystickAngle) * clamped;
+    const knobY = Math.sin(joystickAngle) * clamped;
+    joystickKnob.style.transform = `translate(calc(-50% + ${knobX}px), calc(-50% + ${knobY}px))`;
+}
+
+function resetJoystick(){
+    joystickAngle = 0;
+    joystickDist = 0;
+    joystickKnob.style.transform = 'translate(-50%, -50%)';
+}
+
+joystickBase.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    joystickDragging = true;
+    joystickBase.classList.add('active');
+    updateJoystickFromEvent(e);
+});
+window.addEventListener('mousemove', (e) => {
+    if(joystickDragging === true){
+        updateJoystickFromEvent(e);
+    }
+});
+window.addEventListener('mouseup', () => {
+    if(joystickDragging === true){
+        joystickDragging = false;
+        joystickBase.classList.remove('active');
+        resetJoystick();
+    }
+});
+
+if(isMobile){
     chatInput.onclick = () => {
         chatDiv.classList.remove('hidden');
         chatInput.setAttribute('tabindex', '0');

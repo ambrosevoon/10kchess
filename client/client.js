@@ -297,6 +297,14 @@ function render() {
                 changed = true;
             }
         }
+
+        if(joystickDist > 0){
+            const xv = Math.cos(joystickAngle) * joystickDist;
+            const yv = Math.sin(joystickAngle) * joystickDist;
+            camera.x -= xv * dt;
+            camera.y -= yv * dt;
+            changed = true;
+        }
     }
 
     if(!changed) return;
